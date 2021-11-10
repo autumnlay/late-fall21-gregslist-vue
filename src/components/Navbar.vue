@@ -59,12 +59,12 @@
             Cars
           </router-link>
           <!-- FIXME change to Houses -->
-          <!-- <router-link
-            :to="{ name: 'About' }"
+          <router-link
+            :to="{ name: 'Houses' }"
             class="btn text-success lighten-30 selectable text-uppercase"
           >
             Houses
-          </router-link> -->
+          </router-link>
           <!-- FIXME change to Jobs -->
           <!-- <router-link
             :to="{ name: 'About' }"
@@ -79,22 +79,22 @@
 </template>
 
 <script>
-import { AuthService } from '../services/AuthService'
-import { AppState } from '../AppState'
-import { computed } from 'vue'
+import { AuthService } from "../services/AuthService";
+import { AppState } from "../AppState";
+import { computed } from "vue";
 export default {
   setup() {
     return {
       user: computed(() => AppState.user),
       async login() {
-        AuthService.loginWithPopup()
+        AuthService.loginWithPopup();
       },
       async logout() {
-        AuthService.logout({ returnTo: window.location.origin })
-      }
-    }
-  }
-}
+        AuthService.logout({ returnTo: window.location.origin });
+      },
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -104,18 +104,23 @@ export default {
   transform: scale(0);
   transition: all 0.15s linear;
 }
+
 .dropdown-menu.show {
   transform: scale(1);
 }
+
 .hoverable {
   cursor: pointer;
 }
+
 a:hover {
   text-decoration: none;
 }
+
 .nav-link {
   text-transform: uppercase;
 }
+
 .navbar-nav .router-link-exact-active {
   border-bottom: 2px solid var(--bs-success);
   border-bottom-left-radius: 0;

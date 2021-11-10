@@ -1,35 +1,35 @@
-<template>
-  <Modal id="car-modal">
+<template >
+  <Modal id="house-modal">
     <template #modal-title class="bg-success">
-      <h4>{{ car.id ? "Edit" : "Create" }} Car</h4>
+      <h4>{{ house.id ? "Edit" : "Create" }} House</h4>
     </template>
     <template #modal-body>
       <form @submit.prevent="handleSubmit">
         <div class="mb-3 d-flex justify-content-between">
           <div>
-            <label for="make" class="form-label">Make</label>
+            <label for="bedrooms" class="form-label">Bedrooms</label>
             <input
               type="text"
               class="form-control"
-              name="make"
-              id="make"
-              aria-describedby="make"
-              placeholder="Make..."
+              name="bedrooms"
+              id="bedrooms"
+              aria-describedby="bedrooms"
+              placeholder="bedrooms..."
               required
-              v-model="editable.make"
+              v-model="editable.bedrooms"
             />
           </div>
           <div>
-            <label for="model" class="form-label">Model</label>
+            <label for="bathrooms" class="form-label">Bathrooms</label>
             <input
               type="text"
               class="form-control"
-              name="model"
-              id="model"
-              aria-describedby="model"
-              placeholder="Model..."
+              name="bathrooms"
+              id="bathrooms"
+              aria-describedby="bathrooms"
+              placeholder="bathrooms..."
               required
-              v-model="editable.model"
+              v-model="editable.bathrooms"
             />
           </div>
         </div>
@@ -47,18 +47,6 @@
               max="2022"
               required
               v-model="editable.year"
-            />
-          </div>
-          <div>
-            <label for="color" class="form-label">Color</label>
-            <input
-              type="color"
-              v-model="editable.color"
-              class="form-control"
-              name="color"
-              id="color"
-              aria-describedby="color"
-              required
             />
           </div>
           <div>
@@ -117,7 +105,7 @@
             Close
           </button>
           <button type="submit" class="btn btn-primary">
-            {{ car.id ? "Save" : "Create" }}
+            {{ house.id ? "Save" : "Create" }}
           </button>
         </div>
       </form>
@@ -127,21 +115,21 @@
 
 
 <script>
+import { House } from "../Models/House";
 import { ref } from "@vue/reactivity";
 import { logger } from "../utils/Logger";
-import { carsService } from "../services/CarsService";
+import { housesService } from "../services/HousesService";
 import Pop from "../utils/Pop";
 import { Modal } from "bootstrap";
 import { useRouter } from "vue-router";
 import { AppState } from "../AppState";
-import { Car } from "../Models/Car";
 import { watchEffect } from "@vue/runtime-core";
 
 export default {
   props: {
-    car: {
-      type: Car,
-      default: () => new Car(),
+    house: {
+      type: House,
+      default: () => new House(),
     },
   },
   setup(props) {
@@ -150,7 +138,7 @@ export default {
 
     // watchEffect is a method that runs anytime any of its values change
     watchEffect(() => {
-      editable.value = { ...props.car };
+      editable.value = { ...props.house };
     });
 
     return {
@@ -158,19 +146,17 @@ export default {
       async handleSubmit() {
         try {
           if (editable.value.id) {
-            await carsService.edit(editable.value);
+            await housesService.edit(editable.value);
           } else {
-            await carsService.create(editable.value);
+            await housesService.create(editable.value);
           }
-          // if successful close modal
           Modal.getOrCreateInstance(
-            document.getElementById("car-modal")
+            document.getElementById("house-modal")
           ).hide();
           router.push({
-            name: "CarDetails",
-            params: { id: AppState.activeCar.id },
+            name: "HouseDetails",
+            params: { id: AppState.activeHouse.id },
           });
-          // change route to car details for this new car
         } catch (error) {
           logger.error(error);
           Pop.toast("Failed to Create", "error");
@@ -180,7 +166,5 @@ export default {
   },
 };
 </script>
-
-
-<style lang="scss" scoped>
+<style lang="">
 </style>
